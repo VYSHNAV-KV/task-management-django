@@ -1,9 +1,9 @@
 from django.urls import path
 from .views import (
     # API views
-    UserTaskList,
-    CompleteTask,
-    TaskReport,
+    # UserTaskList,
+    # CompleteTask,
+    # TaskReport,
 
     # Auth UI
     login_view,
@@ -24,6 +24,9 @@ from .views import (
     create_task,
     view_tasks,
     view_reports,
+    user_tasks,
+    complete_task,
+    task_report
 
 
 )
@@ -31,9 +34,14 @@ from .views import (
 urlpatterns = [
 
     # ================= API (JWT) =================
-    path('tasks/', UserTaskList.as_view(), name='user_tasks'),
-    path('tasks/<int:id>/', CompleteTask.as_view(), name='complete_task'),
-    path('tasks/<int:id>/report/', TaskReport.as_view(), name='task_report'),
+    
+    path("tasks/", user_tasks),
+    path("tasks/<int:id>/", complete_task),
+    path("tasks/<int:id>/report/", task_report),
+
+    # path('tasks/', UserTaskList.as_view(), name='user_tasks'),
+    # path('tasks/<int:id>/', CompleteTask.as_view(), name='complete_task'),
+    # path('tasks/<int:id>/report/', TaskReport.as_view(), name='task_report'),
 
     # ================= AUTH UI ===================
     path('login/', login_view, name='login'),

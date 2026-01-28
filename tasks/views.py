@@ -10,70 +10,132 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import User, Task
 from .serializers import TaskSerializer
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from .models import Task
+from .serializers import TaskSerializer
+
 
 
 # ======================================================
 # ================= USER APIs (JWT ONLY) ================
 # ======================================================
 
-class UserTaskList(APIView):
-    permission_classes = [IsAuthenticated]
+# class UserTaskList(APIView):
+#     permission_classes = [IsAuthenticated]
 
-    def get(self, request):
+#     def get(self, request):
+#         try:
+#             tasks = Task.objects.filter(assigned_to=request.user)
+#             serializer = TaskSerializer(tasks, many=True)
+#             return Response(serializer.data)
+#         except Exception:
+#             return Response({"error": "Unable to fetch tasks"}, status=500)
+
+
+# class CompleteTask(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def put(self, request, id):
+#         try:
+#             task = Task.objects.get(id=id, assigned_to=request.user)
+#         except Task.DoesNotExist:
+#             return Response({"error": "Task not found"}, status=404)
+#         except Exception:
+#             return Response({"error": "Something went wrong"}, status=500)
+
+#         if request.data.get('status') == 'completed':
+#             if not request.data.get('completion_report') or not request.data.get('worked_hours'):
+#                 return Response(
+#                     {"error": "Completion report and worked hours are required"},
+#                     status=400
+#                 )
+
+#             try:
+#                 task.status = 'completed'
+#                 task.completion_report = request.data['completion_report']
+#                 task.worked_hours = request.data['worked_hours']
+#                 task.save()
+#             except Exception:
+#                 return Response({"error": "Failed to update task"}, status=500)
+
+#         return Response({"message": "Task completed successfully"})
+
+
+# class TaskReport(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def get(self, request, id):
+#         if request.user.role not in ['admin', 'superadmin']:
+#             return Response({"error": "Unauthorized"}, status=403)
+
+#         try:
+#             task = Task.objects.get(id=id, status='completed')
+#             return Response({
+#                 "report": task.completion_report,
+#                 "hours": task.worked_hours
+#             })
+#         except Task.DoesNotExist:
+#             return Response({"error": "Report not available"}, status=404)
+#         except Exception:
+#             return Response({"error": "Something went wrong"}, status=500)
+
+
+# ================= USER APIs (JWT ONLY - DIRECT API) =================
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user_tasks(request):
+    try:
+        tasks = Task.objects.filter(assigned_to=request.user)
+        serializer = TaskSerializer(tasks, many=True)
+        return Response(serializer.data)
+    except Exception:
+        return Response({"error": "Unable to fetch tasks"}, status=500)
+
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def complete_task(request, id):
+    try:
+        task = Task.objects.get(id=id, assigned_to=request.user)
+    except Task.DoesNotExist:
+        return Response({"error": "Task not found"}, status=404)
+
+    if request.data.get("status") == "completed":
+        if not request.data.get("completion_report") or not request.data.get("worked_hours"):
+            return Response(
+                {"error": "Completion report and worked hours required"},
+                status=400
+            )
+
         try:
-            tasks = Task.objects.filter(assigned_to=request.user)
-            serializer = TaskSerializer(tasks, many=True)
-            return Response(serializer.data)
+            task.status = "completed"
+            task.completion_report = request.data["completion_report"]
+            task.worked_hours = request.data["worked_hours"]
+            task.save()
         except Exception:
-            return Response({"error": "Unable to fetch tasks"}, status=500)
+            return Response({"error": "Failed to update task"}, status=500)
+
+    return Response({"message": "Task completed successfully"})
 
 
-class CompleteTask(APIView):
-    permission_classes = [IsAuthenticated]
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def task_report(request, id):
+    if request.user.role not in ["admin", "superadmin"]:
+        return Response({"error": "Unauthorized"}, status=403)
 
-    def put(self, request, id):
-        try:
-            task = Task.objects.get(id=id, assigned_to=request.user)
-        except Task.DoesNotExist:
-            return Response({"error": "Task not found"}, status=404)
-        except Exception:
-            return Response({"error": "Something went wrong"}, status=500)
+    try:
+        task = Task.objects.get(id=id, status="completed")
+        return Response({
+            "report": task.completion_report,
+            "hours": task.worked_hours
+        })
+    except Task.DoesNotExist:
+        return Response({"error": "Report not available"}, status=404)
 
-        if request.data.get('status') == 'completed':
-            if not request.data.get('completion_report') or not request.data.get('worked_hours'):
-                return Response(
-                    {"error": "Completion report and worked hours are required"},
-                    status=400
-                )
-
-            try:
-                task.status = 'completed'
-                task.completion_report = request.data['completion_report']
-                task.worked_hours = request.data['worked_hours']
-                task.save()
-            except Exception:
-                return Response({"error": "Failed to update task"}, status=500)
-
-        return Response({"message": "Task completed successfully"})
-
-
-class TaskReport(APIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request, id):
-        if request.user.role not in ['admin', 'superadmin']:
-            return Response({"error": "Unauthorized"}, status=403)
-
-        try:
-            task = Task.objects.get(id=id, status='completed')
-            return Response({
-                "report": task.completion_report,
-                "hours": task.worked_hours
-            })
-        except Task.DoesNotExist:
-            return Response({"error": "Report not available"}, status=404)
-        except Exception:
-            return Response({"error": "Something went wrong"}, status=500)
 
 
 # ======================================================
