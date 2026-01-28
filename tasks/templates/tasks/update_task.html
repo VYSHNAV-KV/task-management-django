@@ -1,0 +1,218 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Update Task</h2>-->
+
+<!--{% if error %}-->
+<!--<p style="color:red;">{{ error }}</p>-->
+<!--{% endif %}-->
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+
+<!--    <label>Title:</label><br>-->
+<!--    <input type="text" name="title" value="{{ task.title }}" required><br><br>-->
+
+<!--    <label>Status:</label><br>-->
+<!--    <select name="status" id="status" onchange="toggleFields()" required>-->
+<!--        <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>-->
+<!--            Pending-->
+<!--        </option>-->
+<!--        <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>-->
+<!--            Completed-->
+<!--        </option>-->
+<!--    </select><br><br>-->
+
+<!--    &lt;!&ndash; Extra fields &ndash;&gt;-->
+<!--    <div id="completionFields" style="display:none;">-->
+<!--        <label>Completion Report:</label><br>-->
+<!--        <textarea name="completion_report">{{ task.completion_report }}</textarea><br><br>-->
+
+<!--        <label>Worked Hours:</label><br>-->
+<!--        <input type="number" name="worked_hours" value="{{ task.worked_hours }}"><br><br>-->
+<!--    </div>-->
+
+<!--    <button type="submit">Update Task</button>-->
+<!--</form>-->
+
+<!--<a href="/{{ request.user.role }}/">Back</a>-->
+
+<!--<script>-->
+<!--function toggleFields() {-->
+<!--    var status = document.getElementById("status").value;-->
+<!--    var fields = document.getElementById("completionFields");-->
+
+<!--    if (status === "completed") {-->
+<!--        fields.style.display = "block";-->
+<!--    } else {-->
+<!--        fields.style.display = "none";-->
+<!--    }-->
+<!--}-->
+
+<!--// Run on page load (important when editing existing completed task)-->
+<!--toggleFields();-->
+<!--</script>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Task</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 420px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #28a745;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .error {
+            color: red;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Update Task</h2>
+
+    {% if error %}
+        <p class="error">{{ error }}</p>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ task.title }}" required>
+
+        <br><br>
+
+        <label>Status:</label>
+        <select name="status" id="status" onchange="toggleFields()" required>
+            <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>
+                Pending
+            </option>
+            <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>
+                Completed
+            </option>
+        </select>
+
+        <br><br>
+
+        <!-- Extra fields -->
+        <div id="completionFields" style="display:none;">
+            <label>Completion Report:</label>
+            <textarea name="completion_report">{{ task.completion_report }}</textarea>
+
+            <br><br>
+
+            <label>Worked Hours:</label>
+            <input type="number" name="worked_hours" value="{{ task.worked_hours }}">
+        </div>
+
+        <button type="submit">Update Task</button>
+    </form>
+
+    <a href="/{{ request.user.role }}/" class="back-link">← Back</a>
+
+</div>
+
+<script>
+function toggleFields() {
+    var status = document.getElementById("status").value;
+    var fields = document.getElementById("completionFields");
+
+    if (status === "completed") {
+        fields.style.display = "block";
+    } else {
+        fields.style.display = "none";
+    }
+}
+
+// Run on page load
+toggleFields();
+</script>
+
+</body>
+</html>

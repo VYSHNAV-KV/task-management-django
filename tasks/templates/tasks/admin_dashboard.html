@@ -1,0 +1,193 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Admin Dashboard</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h2>Admin Dashboard</h2>-->
+
+<!--<a href="/admin/create-task/">Create Task</a> |-->
+<!--<a href="/reports/">View Reports</a> |-->
+<!--<a href="/logout/">Logout</a>-->
+
+<!--<hr>-->
+
+<!--<h3>All Tasks</h3>-->
+<!--<table border="1">-->
+<!--<tr>-->
+<!--    <th>Title</th>-->
+<!--    <th>Assigned To</th>-->
+<!--    <th>Status</th>-->
+<!--    <th>Actions</th>-->
+<!--</tr>-->
+<!--{% for task in tasks %}-->
+<!--<tr>-->
+<!--    <td>{{ task.title }}</td>-->
+<!--    <td>{{ task.assigned_to.username }}</td>-->
+<!--    <td>{{ task.status }}</td>-->
+<!--    <td>-->
+<!--        <a href="/superadmin/task/update/{{ task.id }}/">Edit</a> |-->
+<!--        <a href="/superadmin/task/delete/{{ task.id }}/"-->
+<!--           onclick="return confirm('Delete this task?')">Delete</a>-->
+<!--    </td>-->
+<!--</tr>-->
+<!--{% endfor %}-->
+<!--</table>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 90%;
+            margin: 30px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        .nav-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            padding: 8px 15px;
+            margin: 0 5px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .nav-links a:hover {
+            background-color: #0056b3;
+        }
+
+        hr {
+            margin: 25px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th {
+            background-color: #343a40;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        table td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .status {
+            font-weight: bold;
+            text-transform: capitalize;
+        }
+
+        .status.pending {
+            color: #ff9800;
+        }
+
+        .status.completed {
+            color: #28a745;
+        }
+
+        .action-links a {
+            text-decoration: none;
+            color: #007bff;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .action-links a:hover {
+            text-decoration: underline;
+            color: #0056b3;
+        }
+
+        .delete-link {
+            color: #dc3545 !important;
+        }
+
+        .delete-link:hover {
+            color: #a71d2a !important;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Admin Dashboard</h2>
+
+    <div class="nav-links">
+        <a href="/admin/create-task/">Create Task</a>
+        <a href="/reports/">View Reports</a>
+        <a href="/logout/">Logout</a>
+    </div>
+
+    <hr>
+
+    <h3>All Tasks</h3>
+
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Assigned To</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.assigned_to.username }}</td>
+            <td class="status {{ task.status }}">{{ task.status }}</td>
+            <td class="action-links">
+                <a href="/superadmin/task/update/{{ task.id }}/">Edit</a>
+                <a href="/superadmin/task/delete/{{ task.id }}/"
+                   class="delete-link"
+                   onclick="return confirm('Delete this task?')">Delete</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align:center;">No tasks available</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+
+</body>
+</html>
+

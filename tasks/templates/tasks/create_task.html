@@ -1,0 +1,141 @@
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <title>Create Task</title>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<h2>Create Task</h2>-->
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+
+<!--    <input type="text" name="title" placeholder="Task Title" required><br><br>-->
+
+<!--    <textarea name="description" placeholder="Task Description" required></textarea><br><br>-->
+
+<!--    <label>Assign to User:</label><br>-->
+<!--    <select name="user" required>-->
+<!--        {% for u in users %}-->
+<!--        <option value="{{ u.id }}">{{ u.username }}</option>-->
+<!--        {% endfor %}-->
+<!--    </select><br><br>-->
+
+<!--    <button type="submit">Create Task</button>-->
+<!--</form>-->
+
+<!--<a href="/admin/">Back</a>-->
+
+<!--</body>-->
+<!--</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Task</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 420px;
+            margin: 60px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #007bff;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Create Task</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="text" name="title" placeholder="Task Title" required>
+        <br><br>
+
+        <textarea name="description" placeholder="Task Description" required></textarea>
+        <br><br>
+
+        <label>Assign to User:</label>
+        <select name="user" required>
+            {% for u in users %}
+            <option value="{{ u.id }}">{{ u.username }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit">Create Task</button>
+    </form>
+
+    <a href="/admin/" class="back-link">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>

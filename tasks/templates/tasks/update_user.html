@@ -1,0 +1,121 @@
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h2>Update User</h2>-->
+
+<!--<form method="post">-->
+<!--    {% csrf_token %}-->
+<!--    <input type="text" name="username" value="{{ user.username }}" required><br><br>-->
+
+<!--    <select name="role">-->
+<!--        <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>-->
+<!--        <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>-->
+<!--    </select><br><br>-->
+
+<!--    <button type="submit">Update</button>-->
+<!--</form>-->
+
+<!--<a href="/superadmin/">Back</a>-->
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User</title>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 380px;
+            margin: 70px auto;
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            background-color: #17a2b8;
+            color: #ffffff;
+            padding: 10px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #138496;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <h2>Update User</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <input type="text" name="username" value="{{ user.username }}" required>
+        <br><br>
+
+        <select name="role">
+            <option value="user" {% if user.role == 'user' %}selected{% endif %}>User</option>
+            <option value="admin" {% if user.role == 'admin' %}selected{% endif %}>Admin</option>
+        </select>
+
+        <button type="submit">Update</button>
+    </form>
+
+    <a href="/superadmin/" class="back-link">← Back to Dashboard</a>
+
+</div>
+
+</body>
+</html>
